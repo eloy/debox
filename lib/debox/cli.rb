@@ -10,7 +10,7 @@ class Debox::CLI
   def run_command(args)
     command = args.shift.strip rescue "help"
 
-    Debox.merge_command_line_options! options
+    Debox::Config.merge_command_line_options! options
 
     Debox::Command.load
     Debox::Command.run(command, options, args)

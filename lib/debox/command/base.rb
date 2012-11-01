@@ -1,4 +1,5 @@
 class Debox::Command::Base
+  include Debox::Utils
 
   attr_reader :args
   attr_reader :options

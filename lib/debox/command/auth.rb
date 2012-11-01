@@ -19,4 +19,11 @@ class Debox::Command::Auth < Debox::Command::Base
     respose = Debox::API.users_create user: email, password: password
   end
 
+  def list_users
+    users = Debox::API.users
+    users.each do |user|
+      notice user
+    end
+  end
+
 end
