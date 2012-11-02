@@ -6,13 +6,20 @@ require "highline/import"
 module Debox
 
   module Command
+    include Debox::Utils
 
     attr_reader :options
 
     def self.run(cmd, options={}, args=[])
       begin
+
         command = get_command cmd
-        puts "Invalid command" and exit unless command
+        unless command
+          p commands
+
+          puts "Invalid command"
+          exit(1)
+        end
 
         command_instance = command[:klass].new(args, options)
         method = command[:method]

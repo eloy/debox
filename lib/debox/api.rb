@@ -12,6 +12,9 @@ module Debox
       post '/api_key', opt, skip_basic_auth: true
     end
 
+    # users
+    #----------------------------------------------------------------------
+
     # Create a new user
     # @params:
     #   :host
@@ -24,6 +27,18 @@ module Debox
     # Return existing users
     def self.users
       get '/api/users'
+    end
+
+
+    # recipes
+    #----------------------------------------------------------------------
+
+    def self.recipes_new(opt)
+      get_raw("/api/recipes/#{opt[:app]}/#{opt[:env]}/new").body
+    end
+
+    def self.recipes_create(opt)
+      post_raw "/api/recipes/#{opt[:app]}/#{opt[:env]}/create", content: opt[:content]
     end
 
     private

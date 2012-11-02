@@ -5,6 +5,30 @@ module Debox
       /^([^@\s]+)@((?:[-a-z0-9_]+\.)+[a-z]{2,})$/i
     end
 
+    # md5 and hash
+    #----------------------------------------------------------------------
+
+    def md5_str(str)
+      Digest::MD5.hexdigest str
+    end
+
+    def md5_file(filename)
+      Digest::MD5.file(filename)
+    end
+
+
+    # file edit
+    #----------------------------------------------------------------------
+    def edit_file(content)
+      tmp_file = Tempfile.new "debox"
+      tmp_file.write content
+      tmp_file.close
+      editor = ENV['EDITOR'] || 'nano'
+      system "#{editor} #{tmp_file.path}"
+      edited_file = File.open tmp_file.path
+      edited_file.read
+    end
+
     # Ask for console input
     #----------------------------------------------------------------------
 
@@ -44,7 +68,8 @@ module Debox
       exit 1
     end
 
-    def exit_ok
+    def exit_ok(msg=nil)
+      puts msg if msg
       exit 0
     end
 
