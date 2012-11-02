@@ -37,8 +37,16 @@ module Debox
       get_raw("/api/recipes/#{opt[:app]}/#{opt[:env]}/new").body
     end
 
+    def self.recipes_show(opt)
+      get_raw("/api/recipes/#{opt[:app]}/#{opt[:env]}/show").body
+    end
+
     def self.recipes_create(opt)
       post_raw "/api/recipes/#{opt[:app]}/#{opt[:env]}/create", content: opt[:content]
+    end
+
+    def self.recipes_update(opt)
+      post_raw "/api/recipes/#{opt[:app]}/#{opt[:env]}/update", content: opt[:content]
     end
 
     private
