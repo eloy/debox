@@ -9,7 +9,7 @@ class Debox::Command::Auth < Debox::Command::Base
     response = Debox::API.api_key user: email, password: password
     error_and_exit "Invalid login." unless response.code == "200"
     Debox.config[:api_key] = response.body
-    Debox.update_login_config
+    Debox::Config.update_login_config
     notice 'Login successful'
   end
 

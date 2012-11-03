@@ -9,7 +9,7 @@ module Debox
     #   :user
     #   :password
     def self.api_key(opt)
-      post '/api_key', opt, skip_basic_auth: true
+      post_raw '/api_key', opt, skip_basic_auth: true
     end
 
     # users
