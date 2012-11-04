@@ -12,6 +12,13 @@ module Debox
       post_raw '/api_key', opt, skip_basic_auth: true
     end
 
+    # apps
+    #----------------------------------------------------------------------
+
+    def self.apps
+      get '/api/apps'
+    end
+
     # users
     #----------------------------------------------------------------------
 
@@ -21,8 +28,13 @@ module Debox
     #   :user
     #   :password
     def self.users_create(opt)
-      post '/api/users/create', user: opt[:user], password: opt[:password]
+      post_raw '/api/users/create', user: opt[:user], password: opt[:password]
     end
+
+    def self.users_destroy(opt)
+      post_raw '/api/users/destroy', user: opt[:user]
+    end
+
 
     # Return existing users
     def self.users
@@ -32,6 +44,10 @@ module Debox
 
     # recipes
     #----------------------------------------------------------------------
+
+    def self.recipes(opt)
+      get("/api/recipes/#{opt[:app]}")
+    end
 
     def self.recipes_new(opt)
       get_raw("/api/recipes/#{opt[:app]}/#{opt[:env]}/new").body
@@ -47,6 +63,10 @@ module Debox
 
     def self.recipes_update(opt)
       post_raw "/api/recipes/#{opt[:app]}/#{opt[:env]}/update", content: opt[:content]
+    end
+
+    def self.recipes_destroy(opt)
+      post_raw("/api/recipes/#{opt[:app]}/#{opt[:env]}/destroy")
     end
 
     # deploy
