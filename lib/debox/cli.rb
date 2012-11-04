@@ -56,6 +56,8 @@ class Debox::CLI
 
       opts.on("-h", "--host SERVER_HOST", "Debox server url") do |host|
         options[:host] = host
+        # If host option, set default port unless defined
+        options[:port] = 80 unless options[:port]
       end
 
       opts.on("-p", "--port PORT", "Debox server port") do |port|

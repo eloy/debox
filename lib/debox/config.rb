@@ -21,7 +21,7 @@ module Debox
     # Update login values in the config
     def self.update_login_config
       current = read_config
-      current.merge! host: config[:host], user: config[:user], api_key: config[:api_key]
+      current.merge! host: config[:host], port: config[:port], user: config[:user], api_key: config[:api_key]
       save_config current
     end
 
@@ -46,7 +46,7 @@ module Debox
 
     # Return defaults values
     def self.defaults
-      { host: 'localhost', port: 9292 }
+      { host: 'localhost', port: 80 }
     end
 
     # Return config file full path

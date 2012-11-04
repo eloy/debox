@@ -56,6 +56,11 @@ module Debox
       stream("/api/deploy/#{opt[:app]}/#{opt[:env]}", nil, {}, block)
     end
 
+
+    def self.public_key
+      get_raw('/api/public_key').body
+    end
+
     private
 
     # HTTP helpers
@@ -68,7 +73,6 @@ module Debox
     def self.post(path, request_params=nil, options={})
       JSON.parse post_raw(path, request_params, options).body
     end
-
 
     def self.get_raw(path, request_params=nil, options={})
       request :get, path, request_params, options

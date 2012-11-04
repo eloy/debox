@@ -1,0 +1,19 @@
+require 'debox/command/base'
+
+class Debox::Command::Key < Debox::Command::Base
+  include Debox::Utils
+
+  def show
+    notice Debox::API.public_key
+  end
+
+
+  def copy
+    host = args.first
+    error_and_exit 'No target host' unless host
+    key = Debox::API.public_key
+    str = %{echo "#{key}" | ssh #{host} "umask 077; test -d .ssh || mkdir .ssh ; cat >> .ssh/authorized_keys" || exit 1  }
+    system str
+  end
+
+end
