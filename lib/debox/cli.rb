@@ -1,5 +1,5 @@
 class Debox::CLI
-
+  include Debox::Utils
 
   def initialize(*args)
     @args = args
@@ -8,13 +8,23 @@ class Debox::CLI
 
   # Run the command requested in the command line
   def run_command(args)
-    command = args.shift.strip rescue "help"
+    Debox::Command.load
+    given_command = args.shift.strip rescue "help"
+    if given_command == 'help' || options[:show_help]
+      help_and_exit
+    end
+    command = Debox::Command.get_command given_command
+    unless command
+      puts "Invalid command"
+      help_and_error
+    end
 
     Debox::Config.merge_command_line_options! options
-
-    Debox::Command.load
     Debox::Command.run(command, options, args)
   end
+
+
+
 
 
   # Prepare the console and run the command
@@ -44,6 +54,34 @@ class Debox::CLI
 
   private
 
+  def help_show
+    puts "Usage: debox command [options]"
+    puts "Commands:"
+    Debox::Command.commands.values.each do |cmd|
+      puts help_content cmd
+    end
+    puts option_parser.help
+  end
+
+  def help_content(cmd)
+    help = cmd[:help]
+    command = cmd[:command]
+    params_str = help[:params].join ' '
+    help_text = help[:text]
+    command_str = "    #{command} #{params_str}".ljust(50)
+    "#{command_str} # #{help_text}"
+  end
+
+  def help_and_exit
+    help_show
+    exit 0
+  end
+
+
+  def help_and_error
+    help_show
+    exit 1
+  end
 
   def options
     @options ||= {}
@@ -52,8 +90,7 @@ class Debox::CLI
 
   def new_option_parser
     OptionParser.new do |opts|
-      opts.banner = "Usage: debox command [options]"
-
+      opts.banner = "Options:"
       opts.on("-h", "--host SERVER_HOST", "Debox server url") do |host|
         options[:host] = host
         # If host option, set default port unless defined
@@ -68,9 +105,15 @@ class Debox::CLI
         options[:user] = u
       end
 
-      opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-          options[:verbose] = v
+      opts.on("-?", "--help", "Show this help") do |v|
+        options[:show_help] = true
       end
+
+
+      # opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+      #     options[:verbose] = v
+      # end
+
 
     end
   end

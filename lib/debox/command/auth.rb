@@ -3,22 +3,16 @@ require 'debox/command/base'
 class Debox::Command::Auth < Debox::Command::Base
   include Debox::Utils
 
-  def login
-    email = options[:user] || ask_email
-    password = ask_password
-    response = Debox::API.api_key user: email, password: password
-    error_and_exit "Invalid login." unless response.code == "200"
-    Debox.config[:api_key] = response.body
-    Debox::Config.update_login_config
-    notice 'Login successful'
-  end
+  namespace_help 'Auth commands.'
 
+  help :users_new, 'Create user'
   def users_new
     email = ask_email
     password = ask_password_with_confirmation
     respose = Debox::API.users_create user: email, password: password
   end
 
+  help :users_list, "List all users in the debox server"
   def users_list
     users = Debox::API.users
     users.each do |user|

@@ -10,17 +10,8 @@ module Debox
 
     attr_reader :options
 
-    def self.run(cmd, options={}, args=[])
+    def self.run(command, options={}, args=[])
       begin
-
-        command = get_command cmd
-        unless command
-          p commands
-
-          puts "Invalid command"
-          exit(1)
-        end
-
         command_instance = command[:klass].new(args, options)
         method = command[:method]
         command_instance.send(method)
@@ -52,7 +43,6 @@ module Debox
         require file
       end
     end
-
 
   end
 end

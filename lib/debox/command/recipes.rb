@@ -3,7 +3,7 @@ require 'debox/command/base'
 class Debox::Command::Recipes < Debox::Command::Base
   include Debox::Utils
 
-
+  help :new, params: ['application', 'environment'], text: 'Create a new capistrano recipe.'
   def new
     app = args.first
     env = args.last
@@ -21,7 +21,7 @@ class Debox::Command::Recipes < Debox::Command::Base
     exit_ok "Recipe created"
   end
 
-
+  help :edit, params: ['application', 'environment'], text: 'Edit a capistrano recipe.'
   def edit
     app = args.first
     env = args.last
