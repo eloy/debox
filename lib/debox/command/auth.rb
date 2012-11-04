@@ -13,13 +13,13 @@ class Debox::Command::Auth < Debox::Command::Base
     notice 'Login successful'
   end
 
-  def create_user
+  def users_new
     email = ask_email
     password = ask_password_with_confirmation
     respose = Debox::API.users_create user: email, password: password
   end
 
-  def list_users
+  def users_list
     users = Debox::API.users
     users.each do |user|
       notice user
