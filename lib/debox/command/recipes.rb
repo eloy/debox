@@ -3,7 +3,22 @@ require 'debox/command/base'
 class Debox::Command::Recipes < Debox::Command::Base
   include Debox::Utils
 
-  help :new, params: ['application', 'environment'], text: 'Create a new capistrano recipe.'
+  help :index, params: ['application'], text: 'List recipes for the application'
+  def index
+    app = args.first
+    Debox::API.recipes(app: app).each do |recipe|
+      puts recipe
+    end
+  end
+
+  help :show, params: ['application', 'environment'], text: 'Show a new capistrano recipe'
+  def show
+    app = args.first
+    env = args.last
+    puts Debox::API.recipes_show app: app, env: env
+  end
+
+  help :new, params: ['application', 'environment'], text: 'Create a new capistrano recipe'
   def new
     app = args.first
     env = args.last
@@ -21,7 +36,7 @@ class Debox::Command::Recipes < Debox::Command::Base
     exit_ok "Recipe created"
   end
 
-  help :edit, params: ['application', 'environment'], text: 'Edit a capistrano recipe.'
+  help :edit, params: ['application', 'environment'], text: 'Edit a capistrano recipe'
   def edit
     app = args.first
     env = args.last
@@ -39,5 +54,13 @@ class Debox::Command::Recipes < Debox::Command::Base
     exit_ok "Recipe updated"
   end
 
+
+  help :delete, params: ['application', 'environment'], text: 'Delete a capistrano recipe'
+  def delete
+    app = args.first
+    env = args.last
+    Debox::API.recipes_destroy app: app, env: env
+    exit_ok "Recipe deleted"
+  end
 
 end

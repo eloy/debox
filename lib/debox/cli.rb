@@ -23,10 +23,6 @@ class Debox::CLI
     Debox::Command.run(command, options, args)
   end
 
-
-
-
-
   # Prepare the console and run the command
   def start
     begin
@@ -46,7 +42,6 @@ class Debox::CLI
       exit(1)
     end
   end
-
 
   def option_parser
     @option_parser ||= new_option_parser
