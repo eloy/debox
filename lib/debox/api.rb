@@ -73,9 +73,13 @@ module Debox
     #----------------------------------------------------------------------
 
     def self.deploy(opt, &block)
-      stream("/api/deploy/#{opt[:app]}/#{opt[:env]}", nil, {}, block)
+      path = "/api/deploy/#{opt[:app]}/#{opt[:env]}"
+      path += "/#{opt[:task]}" if opt[:task]
+      stream(path, nil, {}, block)
     end
 
+    # Public key
+    #----------------------------------------------------------------------
 
     def self.public_key
       get_raw('/api/public_key').body
