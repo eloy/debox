@@ -41,7 +41,6 @@ module Debox
       get '/api/users'
     end
 
-
     # recipes
     #----------------------------------------------------------------------
 
@@ -85,6 +84,18 @@ module Debox
       get_raw('/api/public_key').body
     end
 
+
+    # logs
+    #----------------------------------------------------------------------
+
+    def self.logs(app, env)
+      get "/api/logs/#{app}/#{env}"
+    end
+
+    def self.logs_show(app, env, index)
+      get "/api/logs/#{app}/#{env}/#{index}"
+    end
+
     private
 
     # HTTP helpers
@@ -95,7 +106,7 @@ module Debox
     end
 
     def self.post(path, request_params=nil, options={})
-      JSON.parse post_raw(path, request_params, options).body
+      JSON.parse post_raw(path, request_params, options).body, symbolize_names: true
     end
 
     def self.get_raw(path, request_params=nil, options={})
@@ -103,7 +114,7 @@ module Debox
     end
 
     def self.get(path, request_params=nil, options={})
-      JSON.parse get_raw(path, request_params, options).body
+      JSON.parse get_raw(path, request_params, options).body, symbolize_names: true
     end
 
     # Create a new Net::HTTP request
@@ -141,13 +152,20 @@ module Debox
     # Run request and read run block with the chunk
     def self.stream(path, request_params=nil, options={ }, block)
       request = new_request :get, path, request_params, options
-      http = Net::HTTP.start(Debox.config[:host], Debox.config[:port])
+      http = http_connection
       http.request(request) do | response|
         check_errors response
         response.read_body do |chunk|
           block.call chunk
         end
       end
+    end
+
+    def self.http_connection
+      http = Net::HTTP.start(Debox.config[:host], Debox.config[:port])
+      # Set timeout to 30 min
+      http.read_timeout = 180000
+      return http
     end
 
     # TODO: DRY three methods bellow
