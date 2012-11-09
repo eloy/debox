@@ -8,7 +8,9 @@ class Debox::Command::Deploy < Debox::Command::Base
     if args.length > 2
       deploy_params[:task] = args[2]
     end
-    Debox::API.deploy(deploy_params) do |chunk|
+    Debox::API.deploy(deploy_params)
+    sleep 1
+    Debox::API.live_log(deploy_params) do |chunk|
       puts chunk
     end
   end

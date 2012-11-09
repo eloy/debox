@@ -74,8 +74,14 @@ module Debox
     def self.deploy(opt, &block)
       path = "/api/deploy/#{opt[:app]}/#{opt[:env]}"
       path += "/#{opt[:task]}" if opt[:task]
+      get_raw(path).body
+    end
+
+    def self.live_log(opt, &block)
+      path = "/api/live_log/#{opt[:app]}/#{opt[:env]}"
       stream(path, nil, {}, block)
     end
+
 
     # Public key
     #----------------------------------------------------------------------
