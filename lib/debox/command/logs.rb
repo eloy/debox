@@ -11,8 +11,7 @@ class Debox::Command::Logs < Debox::Command::Base
     app = args[0]
     env = args[1]
     index = args[2] || 'last'
-    log = Debox::API.logs_show app, env, index
-    puts log[:log]
+    puts Debox::API.logs_show app, env, index
   end
 
   help :list, params: ['application', 'environment'], text: "List logs for application and env"
@@ -28,10 +27,10 @@ class Debox::Command::Logs < Debox::Command::Base
 
   def format_log_info(log)
     l = []
-    l << (log[:success] ? "Success" : "Error")
+    l << log[:status]
     l << log[:task]
     l << DateTime.parse(log[:time]).to_s
-    l << log[:result]
+    l << log[:error]
     l.join "\t"
   end
 end

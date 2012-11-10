@@ -99,7 +99,7 @@ module Debox
     end
 
     def self.logs_show(app, env, index)
-      get "/api/logs/#{app}/#{env}/#{index}"
+      get_raw("/api/logs/#{app}/#{env}/#{index}").body
     end
 
     private
