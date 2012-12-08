@@ -23,7 +23,6 @@ module Debox
       end
     end
 
-
     def self.commands
       @@commands ||= {}
     end
@@ -31,7 +30,6 @@ module Debox
     def self.register_command(command)
       commands[command[:command]] = command
     end
-
 
     def self.get_command(cmd)
       commands[cmd]

@@ -1,9 +1,11 @@
-# setup test environment
-set :environment, :test
-set :run, false
-set :raise_errors, true
-set :logging, false
+
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
+
+Debox::Command.load
 
 RSpec.configure do |config|
-  config.include Rack::Test::Methods
+
 end

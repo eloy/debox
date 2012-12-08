@@ -77,6 +77,13 @@ module Debox
       get_raw(path).body
     end
 
+    def self.cap(opt, &block)
+      path = "/api/cap/#{opt[:app]}"
+      path += "/#{opt[:env]}" if opt[:env]
+      path += "?task=#{opt[:task]}"
+      get_raw(path).body
+    end
+
     def self.live_log(opt, &block)
       path = "/api/live_log/#{opt[:app]}/#{opt[:env]}"
       stream(path, nil, {}, block)
