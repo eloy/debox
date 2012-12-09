@@ -31,7 +31,7 @@ class Debox::Command::Recipes < Debox::Command::Base
     end
 
     # Send changes back to the server
-    notice "Updating changes in the server"
+    notice "Updating changes on the server"
     Debox::API.recipes_create app: app, env: env, content: edited_recipe
     exit_ok "Recipe created"
   end
@@ -49,11 +49,10 @@ class Debox::Command::Recipes < Debox::Command::Base
     end
 
     # Send changes back to the server
-    notice "Updating changes in the server"
+    notice "Updating changes on the server"
     Debox::API.recipes_update app: app, env: env, content: edited_recipe
     exit_ok "Recipe updated"
   end
-
 
   help :delete, params: ['application', 'environment'], text: 'Delete a capistrano recipe'
   def delete
