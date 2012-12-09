@@ -13,13 +13,23 @@ def create_user(email='debox@indeos.es')
   return user
 end
 
+# Create a user and stub configuration
 def configure_user(user=create_user)
   Debox::Config.stub(:config).and_return host: 'localhost', port: DEBOX_SERVER_PORT, user: user.email, api_key: user.api_key
   return user
 end
 
-
 # Stub configuration for match spec settings
 def configure
   Debox::Config.stub(:config).and_return host: 'localhost', port: DEBOX_SERVER_PORT
+end
+
+
+# Build a job with stdout and capistrano methos stubbed
+def stubbed_job(app, env, task='deploy', out=nil)
+  out = OpenStruct.new time: DateTime.now, success: true unless out
+  job = DeboxServer::Job.new(app, env, task)
+  job.stub(:stdout) { out }
+  job.stub(:capistrano) { { } }
+  return job
 end

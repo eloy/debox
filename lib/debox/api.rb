@@ -97,8 +97,10 @@ module Debox
       stream(path, nil, {}, block)
     end
 
-    def self.logs(app, env)
-      get "/v1/logs/#{app}/#{env}"
+    def self.logs(opt)
+      path = "/v1/logs/#{opt[:app]}"
+      path += "/#{opt[:env]}" if opt[:env]
+      get path
     end
 
     def self.logs_show(app, env, index)
@@ -204,8 +206,6 @@ module Debox
       http.read_timeout = 180000
       return http
     end
-
-    # TODO: DRY three methods bellow
 
     def self.unauthorized_error
       error_and_exit "Access denied. Please login first."
