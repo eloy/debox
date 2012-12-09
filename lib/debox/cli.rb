@@ -15,7 +15,7 @@ class Debox::CLI
     end
     command = Debox::Command.get_command given_command
     unless command
-      puts "Invalid command"
+      puts "Invalid command #{given_command}"
       help_and_error
     end
 
@@ -62,8 +62,9 @@ class Debox::CLI
     help = cmd[:help]
     command = cmd[:command]
     params_str = help[:params].join ' '
+    opt_params_str = help[:opt_params].map { |p| "[#{p}]"}.join ' '
     help_text = help[:text]
-    command_str = "    #{command} #{params_str}".ljust(50)
+    command_str = "    #{command} #{params_str} #{opt_params_str}".ljust(50)
     "#{command_str} # #{help_text}"
   end
 
@@ -103,12 +104,6 @@ class Debox::CLI
       opts.on("-?", "--help", "Show this help") do |v|
         options[:show_help] = true
       end
-
-
-      # opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-      #     options[:verbose] = v
-      # end
-
 
     end
   end

@@ -24,7 +24,6 @@ def configure
   Debox::Config.stub(:config).and_return host: 'localhost', port: DEBOX_SERVER_PORT
 end
 
-
 # Build a job with stdout and capistrano methos stubbed
 def stubbed_job(app, env, task='deploy', out=nil)
   out = OpenStruct.new time: DateTime.now, success: true unless out
@@ -32,4 +31,11 @@ def stubbed_job(app, env, task='deploy', out=nil)
   job.stub(:stdout) { out }
   job.stub(:capistrano) { { } }
   return job
+end
+
+def run_command(args_str, options={})
+  args = args_str.split
+  given_command = args.shift.strip
+  command = Debox::Command.get_command given_command
+  Debox::Command.run(command, options, args)
 end

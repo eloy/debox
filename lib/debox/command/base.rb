@@ -18,12 +18,14 @@ class Debox::Command::Base
   def self.help(method, options)
     if options.is_a? Hash
       help_text = options[:text]
-      params = options[:params]
+      params = options[:params] || []
+      opt_params = options[:opt_params] || []
     else
       help_text = options
       params = []
+      opt_params = []
     end
-    help_methods[method] = { text: help_text, params: params }
+    help_methods[method] = { text: help_text, params: params, opt_params: opt_params }
   end
 
   # Help for methods

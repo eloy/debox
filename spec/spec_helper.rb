@@ -4,8 +4,10 @@ require 'rubygems'
 require 'bundler'
 require 'rack'
 require 'debox_server'
+
 Bundler.require
 
+require "debox/cli"
 require 'rspec/mocks'
 # require 'webmock/rspec'
 
