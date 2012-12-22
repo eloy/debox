@@ -1,4 +1,5 @@
 require "net/http"
+require 'base64'
 
 module Debox
   module API
@@ -66,14 +67,8 @@ module Debox
       delete_raw("/v1/recipes/#{opt[:app]}/#{opt[:env]}")
     end
 
-    # deploy
+    # Cap
     #----------------------------------------------------------------------
-
-    def self.deploy(opt, &block)
-      path = "/v1/deploy/#{opt[:app]}/#{opt[:env]}"
-      path += "/#{opt[:task]}" if opt[:task]
-      get_raw(path).body
-    end
 
     def self.cap(opt, &block)
       path = "/v1/cap/#{opt[:app]}"
@@ -92,9 +87,38 @@ module Debox
     # logs
     #----------------------------------------------------------------------
 
-    def self.live_log(opt, &block)
-      path = "/v1/live_log/#{opt[:app]}/#{opt[:env]}"
-      stream(path, nil, {}, block)
+    def self.live(opt, &block)
+      path = "/v1/live/log/#{opt[:app]}"
+      path += "/#{opt[:env]}" if opt[:env]
+
+      stream path, nil, { }, block
+
+      # host = "http://#{Debox.config[:host]}:#{Debox.config[:port]}"
+      # auth = [Debox.config[:user], Debox.config[:api_key]].join(':')
+      # query = { }
+      # headers = { 'Authorization' =>  "Basic #{Base64.encode64 auth}" }
+      # EM.run do
+      #   source = EventMachine::EventSource.new("#{host}#{path}", query, headers )
+      #   source.message do |m|
+      #     block.call m
+      #   end
+
+      #   source.open do
+      #     puts "Connection opened"
+      #   end
+
+      #   source.close do
+      #     puts "Connection closed"
+      #     EM.stop
+      #   end
+
+      #   source.error do |error|
+      #     puts "ERROR: #{error}"
+      #     EM.stop
+      #   end
+
+      #   source.start
+      # end
     end
 
     def self.logs(opt)
@@ -220,12 +244,9 @@ module Debox
     end
 
     def self.error_and_exit(msg)
-      puts msg
       raise DeboxServerException.new msg
     end
-
   end
-
 
   class DeboxServerException < Exception
   end

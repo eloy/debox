@@ -4,8 +4,9 @@ class Debox::Command::Live < Debox::Command::Base
 
   help :index, params: ['application', 'enviroment'], text: 'Live log for application'
   def index
-    deploy_params = { app: args[0], env: args[1] }
-    Debox::API.live_log(deploy_params) do |chunk|
+    opt = { app: args[0] }
+    opt[:env] = args[1] if args[1]
+    Debox::API.live(opt) do |chunk|
       puts chunk
     end
   end
