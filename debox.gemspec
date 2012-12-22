@@ -18,8 +18,8 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'json'
   gem.add_runtime_dependency 'netrc'
   gem.add_runtime_dependency 'highline'
-
   # Development dependencies
   gem.add_development_dependency 'rspec'
-
+  gem.add_development_dependency 'debox_server'
+  gem.add_development_dependency 'thin'
 end

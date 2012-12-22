@@ -3,13 +3,13 @@ ENV['RACK_ENV'] = 'test'
 require 'rubygems'
 require 'bundler'
 require 'rack'
+require 'thin'
 require 'debox_server'
 
 Bundler.require
 
 require "debox/cli"
 require 'rspec/mocks'
-# require 'webmock/rspec'
 
 # Setup mocks
 RSpec::Mocks::setup(Object.new)

@@ -1,6 +1,8 @@
 # Start a debox server in a new thread
 def debox_server_start(port)
-  Thread.new { Rack::Handler::WEBrick.run(DeboxServer::DeboxAPI, :Port => port) }
+  Thread.new do
+    Thin::Server.start('127.0.0.1', port, DeboxServer::DeboxAPI)
+  end
   sleep 1
 end
 
