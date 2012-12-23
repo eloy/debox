@@ -3,10 +3,12 @@ require 'debox/command/base'
 class Debox::Command::Apps < Debox::Command::Base
   include Debox::Utils
 
-  help :index, "List apps"
+  help :index, "List apps and envs"
   def index
     Debox::API.apps.each do |app|
-      notice app
+      name = app[:app]
+      envs = app[:envs].join ', '
+      notice "* #{name} [#{envs}]"
     end
   end
 end
