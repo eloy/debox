@@ -43,7 +43,7 @@ describe 'logs' do
     logs.should be_empty
   end
 
-  it 'should return invalid if log does not exists' do
+  it 'should return invalid if app does not exists' do
     configure_user
     expect {
       Debox::API.logs app: 'test', env: 'production'

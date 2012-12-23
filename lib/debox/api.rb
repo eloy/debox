@@ -103,8 +103,11 @@ module Debox
       get path
     end
 
-    def self.logs_show(app, env, index)
-      get_raw("/v1/logs/#{app}/#{env}/#{index}").body
+    def self.log(opt)
+      path = "/v1/log/#{opt[:app]}"
+      path += "/#{opt[:env]}" if opt[:env]
+      path += "?index=#{opt[:index]}" if opt[:index]
+      get_raw(path).body
     end
 
     private
