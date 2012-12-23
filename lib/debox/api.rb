@@ -1,5 +1,7 @@
 require "net/http"
 require 'base64'
+require 'eventmachine'
+require 'em-eventsource'
 
 module Debox
   module API
@@ -91,34 +93,8 @@ module Debox
       path = "/v1/live/log/#{opt[:app]}"
       path += "/#{opt[:env]}" if opt[:env]
 
-      stream path, nil, { }, block
-
-      # host = "http://#{Debox.config[:host]}:#{Debox.config[:port]}"
-      # auth = [Debox.config[:user], Debox.config[:api_key]].join(':')
-      # query = { }
-      # headers = { 'Authorization' =>  "Basic #{Base64.encode64 auth}" }
-      # EM.run do
-      #   source = EventMachine::EventSource.new("#{host}#{path}", query, headers )
-      #   source.message do |m|
-      #     block.call m
-      #   end
-
-      #   source.open do
-      #     puts "Connection opened"
-      #   end
-
-      #   source.close do
-      #     puts "Connection closed"
-      #     EM.stop
-      #   end
-
-      #   source.error do |error|
-      #     puts "ERROR: #{error}"
-      #     EM.stop
-      #   end
-
-      #   source.start
-      # end
+      # stream path, nil, { }, block
+      eventSource path, { }, block
     end
 
     def self.logs(opt)
@@ -223,6 +199,35 @@ module Debox
         end
       end
     end
+
+
+    def self.eventSource(path, query={ }, block)
+      host = "http://#{Debox.config[:host]}:#{Debox.config[:port]}"
+      auth = [Debox.config[:user], Debox.config[:api_key]].join(':')
+      headers = { 'Authorization' =>  "Basic #{Base64.encode64 auth}" }
+
+      EM.run do
+        source = EventMachine::EventSource.new("#{host}#{path}", query, headers )
+        source.message do |m|
+          block.call m
+        end
+
+        source.error do |error|
+          puts "ERROR: #{error}"
+          EM.stop
+        end
+
+        source.on 'finish' do
+          puts "Job finished"
+          source.close
+          EM.stop
+        end
+
+        source.start
+      end
+
+    end
+
 
     def self.http_connection
       http = Net::HTTP.start(Debox.config[:host], Debox.config[:port])

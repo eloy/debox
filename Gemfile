@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 gem 'json'
 gem 'netrc'
 gem 'highline'
-
+gem 'eventmachine'
+gem 'em-eventsource'
 
 # Specify your gem's dependencies in debox.gemspec
 gemspec
