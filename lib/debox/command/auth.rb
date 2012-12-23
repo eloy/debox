@@ -22,7 +22,7 @@ class Debox::Command::Users < Debox::Command::Base
   help :delete, params: ['email'], text: 'Delete user with a given email'
   def delete
     email = args.first
-    Debox::API.users_destroy user: email
+    Debox::API.users_delete user: email
     notice 'User deleted'
   end
 

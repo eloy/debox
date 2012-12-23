@@ -15,6 +15,8 @@ module Debox
         command_instance = command[:klass].new(args, options)
         method = command[:method]
         command_instance.send(method)
+      rescue Debox::DeboxServerException => error
+        puts error
       rescue Interrupt, StandardError=> error
         puts error
         puts error.backtrace
