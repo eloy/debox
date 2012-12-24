@@ -207,7 +207,7 @@ module Debox
     def self.eventSource(path, query={ }, block)
       host = "http://#{Debox.config[:host]}:#{Debox.config[:port]}"
       auth = [Debox.config[:user], Debox.config[:api_key]].join(':')
-      headers = { 'Authorization' =>  "Basic #{Base64.encode64 auth}" }
+      headers = { 'Authorization' =>  "Basic #{Base64.strict_encode64 auth}" }
 
       EM.run do
         source = EventMachine::EventSource.new("#{host}#{path}", query, headers )
