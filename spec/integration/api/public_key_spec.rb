@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'public_key' do
 
   it 'should return the public key if generated' do
-    configure_user
+    configure_admin
 
     # Stub the rsa file
     public_key_file = double 'file'

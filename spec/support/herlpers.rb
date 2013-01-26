@@ -10,13 +10,13 @@ def server
   @debox_server ||= DeboxServer::Core.new
 end
 
-def create_user(email='debox@indeos.es')
-  user = server.add_user email, 'secret'
+def create_admin(email='debox@indeos.es')
+  user = server.add_user email, 'secret', admin: true
   return user
 end
 
 # Create a user and stub configuration
-def configure_user(user=create_user)
+def configure_admin(user=create_admin)
   Debox::Config.stub(:config).and_return host: 'localhost', port: DEBOX_SERVER_PORT, user: user.email, api_key: user.api_key
   return user
 end

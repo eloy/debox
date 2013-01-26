@@ -6,7 +6,7 @@ describe 'log' do
     job = stubbed_job 'test', 'production', 'deploy', out
     job.save_log
 
-    configure_user
+    configure_admin
 
     log = Debox::API.log app: 'test', env: 'production'
     log.should eq 'Some log content'
@@ -18,7 +18,7 @@ describe 'log' do
     job = stubbed_job 'test', 'production', 'deploy', out
     job.save_log
 
-    configure_user
+    configure_admin
 
     log = Debox::API.log app: 'test'
     log.should eq 'Some log content'
