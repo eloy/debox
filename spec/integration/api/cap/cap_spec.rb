@@ -2,7 +2,7 @@ require 'spec_helper'
 describe 'cap' do
 
   it 'should deal with invalid app' do
-    configure_user
+    configure_admin
     DeboxServer::Deployer.should_not_receive(:add_job_to_queue)
     expect {
       Debox::API.cap(app: 'test')
@@ -10,7 +10,7 @@ describe 'cap' do
   end
 
   it 'should deal with invalid env' do
-    configure_user
+    configure_admin
     server.create_recipe('test', :production, 'invalid content')
     DeboxServer::Deployer.should_not_receive(:add_job_to_queue)
     expect {
@@ -19,7 +19,7 @@ describe 'cap' do
   end
 
   it 'should run a cap task gith a given app' do
-    configure_user
+    configure_admin
     server.create_recipe('test', :production, 'invalid content')
     DeboxServer::Deployer.should_receive(:add_job_to_queue)
 
@@ -30,7 +30,7 @@ describe 'cap' do
   end
 
   it 'should run a cap task gith a given app and env' do
-    configure_user
+    configure_admin
     server.create_recipe('test', :production, 'invalid content')
     server.create_recipe('test', :staging, 'invalid content')
     DeboxServer::Deployer.should_receive(:add_job_to_queue)
@@ -43,7 +43,7 @@ describe 'cap' do
 
 
   it 'should run a cap task gith a given app and env' do
-    configure_user
+    configure_admin
     server.create_recipe('test', :production, 'invalid content')
     server.create_recipe('test', :staging, 'invalid content')
     DeboxServer::Deployer.should_receive(:add_job_to_queue)

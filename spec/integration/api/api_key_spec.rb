@@ -12,7 +12,7 @@ describe 'api_keys' do
   end
 
   it 'should return the user api key with valid credentials' do
-    user = create_user
+    user = create_admin
     configure
     response = Debox::API.api_key user: user.email, password: 'secret'
     response.body.should eq user.api_key
