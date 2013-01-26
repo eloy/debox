@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Debox
 
   # Convenient shortcut to Debox::Config.config
