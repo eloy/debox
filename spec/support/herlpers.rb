@@ -7,7 +7,7 @@ def debox_server_start(port)
 end
 
 def server
-  @debox_server ||= DeboxServer::Core.new
+  @debox_server ||= DeboxServerCore.new
 end
 
 def create_admin(email='debox@indeos.es')
