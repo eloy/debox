@@ -5,7 +5,7 @@ require 'bundler'
 require 'rack'
 require 'thin'
 require 'debox_server'
-
+require 'debox_server/api'
 Bundler.require
 
 require "debox/cli"

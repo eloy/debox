@@ -90,10 +90,7 @@ module Debox
     #----------------------------------------------------------------------
 
     def self.live(opt, &block)
-      path = "/v1/live/log/#{opt[:app]}"
-      path += "/#{opt[:env]}" if opt[:env]
-
-      # stream path, nil, { }, block
+      path = "/v1/live/log/job/#{opt[:job_id]}"
       eventSource path, { }, block
     end
 
