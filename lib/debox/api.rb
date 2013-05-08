@@ -21,6 +21,11 @@ module Debox
       get '/v1/apps'
     end
 
+    # Server status
+    def self.status
+      get '/v1/status'
+    end
+
     # users
     #----------------------------------------------------------------------
 
@@ -94,6 +99,11 @@ module Debox
       eventSource path, { }, block
     end
 
+    def self.notifications(opt={ }, &block)
+      path = "/v1/live/notifications"
+      eventSource path, { }, block
+    end
+
     def self.logs(opt)
       path = "/v1/logs/#{opt[:app]}"
       path += "/#{opt[:env]}" if opt[:env]
@@ -103,7 +113,7 @@ module Debox
     def self.log(opt)
       path = "/v1/log/#{opt[:app]}"
       path += "/#{opt[:env]}" if opt[:env]
-      path += "?index=#{opt[:index]}" if opt[:index]
+      path += "?job_id=#{opt[:job_id]}" if opt[:job_id]
       get_raw(path).body
     end
 
