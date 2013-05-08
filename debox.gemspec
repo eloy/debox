@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["eloy@indeos.es"]
   gem.description   = "CLI for debox"
   gem.summary       = "Debox is a deploy manager"
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/harlock/debox"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -20,8 +20,4 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'highline'
   gem.add_runtime_dependency 'eventmachine'
   gem.add_runtime_dependency 'em-eventsource'
-  # Development dependencies
-  gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'debox_server'
-  gem.add_development_dependency 'thin'
 end
