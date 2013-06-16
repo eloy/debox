@@ -7,8 +7,8 @@ class Debox::Command::Cap < Debox::Command::Base
     deploy_params = { task: args[0], app: args[1] }
     deploy_params[:env] = args[2] if args.count == 3
     cap_request = Debox::API.cap(deploy_params)
-    sleep 1
-    Debox::API.live(deploy_params) do |chunk|
+    job_id = cap_request[:job_id]
+    Debox::API.live(job_id: job_id) do |chunk|
       puts chunk
     end
   end
