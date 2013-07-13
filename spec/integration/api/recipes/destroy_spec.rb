@@ -5,10 +5,10 @@ describe 'recipes_delete' do
 
   it 'should destroy the recipe if exists' do
     configure_admin
-    server.create_recipe('test', :staging, 'sample content')
-    server.create_recipe('test', :production, 'sample content')
+    staging_recipe = server.create_recipe('test', :staging, 'sample content')
+    production_recipe = server.create_recipe('test', :production, 'sample content')
     response = Debox::API.recipes_destroy app: 'test', env: 'staging'
     response.code.should eq '200'
-    server.recipes_list('test').should eq ['production']
+    Recipe.all.should eq [production_recipe]
   end
 end
