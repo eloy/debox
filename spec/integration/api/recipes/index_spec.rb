@@ -1,11 +1,14 @@
 require 'spec_helper'
 
 describe 'recipes index' do
-  it 'should return an empty array without recipes' do
-    configure_admin
-    Debox::API.recipes(app: 'test').should eq []
-  end
 
+  it 'should return invalid if app does not exists' do
+    configure_admin
+    expect {
+      Debox::API.recipes(app: 'test')
+    }.to raise_error Debox::DeboxServerException, "400: Couldn't find App with name = test"
+
+  end
 
   it 'should return current recipes if any' do
     app = 'test'
