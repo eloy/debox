@@ -1,10 +1,11 @@
 require 'spec_helper'
 describe 'log' do
   it 'should return the log' do
-    out = OpenStruct.new time: DateTime.now, success: true, buffer: 'Some log content', error: 'Log result'
     server.create_recipe('test', 'production', 'content')
-    job = stubbed_job 'test', 'production', 'deploy', out
-    job.save_log
+    job = Job.new error: 'Log result', log: 'Some log content'
+    jobs = double('jobs')
+    jobs.should_receive(:last).and_return job
+    Recipe.any_instance.should_receive(:jobs).and_return jobs
 
     configure_admin
 
@@ -13,10 +14,11 @@ describe 'log' do
   end
 
   it 'should return the log without env' do
-    out = OpenStruct.new time: DateTime.now, success: true, buffer: 'Some log content', error: 'Log result'
     server.create_recipe('test', 'production', 'content')
-    job = stubbed_job 'test', 'production', 'deploy', out
-    job.save_log
+    job = Job.new error: 'Log result', log: 'Some log content'
+    jobs = double('jobs')
+    jobs.should_receive(:last).and_return job
+    Recipe.any_instance.should_receive(:jobs).and_return jobs
 
     configure_admin
 

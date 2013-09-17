@@ -1,0 +1,116 @@
+* Debox
+
+This gem is the client for the Debox Server. It allow you to create and update capistrano recipes, run tasks and manage users in the server.
+
+* Installation
+
+To install the latest version, run:
+
+#+BEGIN_SRC sh
+  $ [sudo] gem install debox
+#+END_SRC
+
+* Usage
+
+First thing to do after install the gem is login into your debox server.
+
+#+BEGIN_SRC sh
+  $ debox login -h deboxserver.com -u youruser@email.com
+#+END_SRC
+
+** Getting help
+
+To get a list of available commands run:
+
+#+BEGIN_SRC sh
+  $ debox -h
+
+  Usage: debox command [options]
+  Commands:
+      recipes application                            # List recipes for the application
+      recipes:show application environment           # Show a new capistrano recipe
+      recipes:new application environment            # Create a new capistrano recipe
+      recipes:edit application environment           # Edit a capistrano recipe
+      recipes:delete application environment         # Delete a capistrano recipe
+      users                                          # List all users in the debox server
+      users:new                                      # Create user
+      users:delete email                             # Delete user with a given email
+      apps                                           # List apps and envs
+      log application [environment] [index]          # Show log. Last by default
+      logs application [environment]                 # List logs for application and env
+      deploy application enviroment                  # Deploy application
+      cap task application [environment]             # Deploy application
+      login                                          # Login in the debox server. Require -h param.
+      live application enviroment                    # Live log for application
+      key:show                                       # Show the server ssh public key
+      key:copy target_host                           # Copy the server ssh public key to the target host
+  Options:
+      -h, --host SERVER_HOST           Debox server url
+      -p, --port PORT                  Debox server port
+      -u, --user EMAIL                 User name
+      -?, --help                       Show this help
+#+END_SRC
+
+** Keys setup
+
+You must add the public key for the user runnin the debox server to the server where capistrano have to connect and run task.
+The debox client includes a command for help with this, you can run:
+
+#+BEGIN_SRC sh
+  $ debox key:copy your_application_server
+#+END_SRC
+
+If you haven't access to this server, you can get the key with this command:
+
+#+BEGIN_SRC sh
+  $ debox key:show
+#+END_SRC
+
+** Display applications configured in the server
+
+To get a list of configured apps and its environment run:
+
+#+BEGIN_SRC sh
+  $ debox apps
+#+END_SRC
+
+It will show a list of apps and configured envirments
+
+** Adding applications or environments
+
+To create an application or add a new env to an existent application.
+
+#+BEGIN_SRC sh
+  $ debox recipes:new application_name environment_name
+#+END_SRC
+
+This command will open your default text editor, defined in the environment variable $EDITOR, with a boostraped capistrano recipe.
+After save and close this file, it will be automatically uploaded to the server and ready to use.
+
+** Edit environments
+
+For change the capistrano recipe configured for any recipe run:
+#+BEGIN_SRC sh
+  $ debox recipes:edit application_name environment_name
+#+END_SRC
+
+** Show environments
+
+To get the content for a recipe just run:
+
+#+BEGIN_SRC sh
+  $ debox recipes:show
+#+END_SRC
+
+** Run tasks
+
+You can run any task defined in the capistrano recipe with the cap command:
+
+#+BEGIN_SRC sh
+  $ debox cap deploy:setup app env
+  $ debox cap deploy app env
+  $ debox cap deploy:migrate app env
+  $ debox cap deploy:restart app env
+#+END_SRC
+
+It will stream the server output to the stdout

@@ -16,11 +16,15 @@ class Debox::Command::Logs < Debox::Command::Base
   private
 
   def format_log_info(log)
+    status = log[:success] ? "SUCCESS" : "FAILED"
+    start_time = log[:start_time] ? DateTime.parse(log[:start_time]).to_s : ""
+    end_time = log[:end_time] ? DateTime.parse(log[:end_time]).to_s : ""
+
     l = []
-    l << log[:job_id]
-    l << log[:status]
+    l << log[:id]
+    l << status
     l << log[:task]
-    l << DateTime.parse(log[:time]).to_s
+    l << start_time
     l << log[:error]
     l.join "\t"
   end

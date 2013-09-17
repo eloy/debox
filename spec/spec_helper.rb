@@ -1,11 +1,13 @@
 ENV['RACK_ENV'] = 'test'
+ENV['DEBOX_ROOT'] = File.join(File.dirname(__FILE__), '../')
 
 require 'rubygems'
 require 'bundler'
 require 'rack'
 require 'thin'
 require 'debox_server'
-
+require 'debox_server/api'
+require 'database_cleaner'
 Bundler.require
 
 require "debox/cli"
@@ -26,10 +28,13 @@ DEBOX_SERVER_PORT = 9393
 debox_server_start DEBOX_SERVER_PORT
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
+  end
 
   # Cleanup database after each test
   config.after(:each) do
-    DeboxServer::RedisDB.flush_test_db
+    DatabaseCleaner.clean
   end
-
 end
