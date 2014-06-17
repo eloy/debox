@@ -117,6 +117,25 @@ module Debox
       get_raw(path).body
     end
 
+
+    # acl
+    #----------------------------------------------------------------------
+
+    def self.acl_show(opt)
+      path = "/v1/acl/actions/#{opt[:app]}"
+      path += "/#{opt[:env]}" if opt[:env]
+      path += "?user=#{opt[:user]}" if opt[:user]
+      get(path)
+    end
+
+    def self.acl_add(opt)
+      path = "/v1/acl/actions/#{opt[:app]}"
+      path += "/#{opt[:env]}" if opt[:env]
+
+      post_raw path, user: opt[:user], action: opt[:action]
+    end
+
+
     private
 
     # HTTP helpers
